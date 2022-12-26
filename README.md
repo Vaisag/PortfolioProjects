@@ -1,2 +1,2 @@
 # PortfolioProjects
- Portfolio projects for Resume
+The portfolio projects include projects in SQL, Tableau and Python.
