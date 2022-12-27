@@ -1,0 +1,2109 @@
+{
+    "metadata": {
+        "kernelspec": {
+            "name": "SQL",
+            "display_name": "SQL",
+            "language": "sql"
+        },
+        "language_info": {
+            "name": "sql",
+            "version": ""
+        }
+    },
+    "nbformat_minor": 2,
+    "nbformat": 4,
+    "cells": [
+        {
+            "cell_type": "markdown",
+            "source": [
+                "# **Data Cleaning using SQL**\n",
+                "\n",
+                "## **<u>Skills used</u>**\n",
+                "\n",
+                "- DDL Statements to Alter Tables\n",
+                "    - Change datatypes\n",
+                "    - Add derived columns\n",
+                "- DML statements to select update columns\n",
+                "    - Update columns with null values with default values\n",
+                "    - General Data exploration using select\n",
+                "- Window functions\n",
+                "- Type casting\n",
+                "- Aggregation\n",
+                "- String splits\n",
+                "- Dealing with missing data\n",
+                "- Case Statements\n",
+                "\n",
+                "## <u>**Sections**</u>\n",
+                "\n",
+                "1. Data Exploration\n",
+                "2. Backup and Restore\n",
+                "3. Datatype Updates\n",
+                "4. Data Cleaning/Imputation"
+            ],
+            "metadata": {
+                "azdata_cell_guid": "465bcb06-d19c-452e-baed-d920392f8668"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "## **Data Exploration**"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "69a465d3-db36-4c39-9eae-b6e32aee03b3"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- View the first few rows of the table\n",
+                "select top 10 * from NashvilleHousing;"
+            ],
+            "metadata": {
+                "azdata_cell_guid": "4c942e3f-c70a-4c41-a7ac-5df2c71686ad",
+                "language": "sql",
+                "tags": []
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(10 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.031"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 2,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "UniqueID"
+                                    },
+                                    {
+                                        "name": "ParcelID"
+                                    },
+                                    {
+                                        "name": "LandUse"
+                                    },
+                                    {
+                                        "name": "PropertyAddress"
+                                    },
+                                    {
+                                        "name": "SaleDate"
+                                    },
+                                    {
+                                        "name": "SalePrice"
+                                    },
+                                    {
+                                        "name": "LegalReference"
+                                    },
+                                    {
+                                        "name": "SoldAsVacant"
+                                    },
+                                    {
+                                        "name": "OwnerName"
+                                    },
+                                    {
+                                        "name": "OwnerAddress"
+                                    },
+                                    {
+                                        "name": "Acreage"
+                                    },
+                                    {
+                                        "name": "TaxDistrict"
+                                    },
+                                    {
+                                        "name": "LandValue"
+                                    },
+                                    {
+                                        "name": "BuildingValue"
+                                    },
+                                    {
+                                        "name": "TotalValue"
+                                    },
+                                    {
+                                        "name": "YearBuilt"
+                                    },
+                                    {
+                                        "name": "Bedrooms"
+                                    },
+                                    {
+                                        "name": "FullBath"
+                                    },
+                                    {
+                                        "name": "HalfBath"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "2045",
+                                    "1": "007 00 0 125.00",
+                                    "2": "SINGLE FAMILY",
+                                    "3": "1808  FOX CHASE DR, GOODLETTSVILLE",
+                                    "4": "2013-04-09",
+                                    "5": "240000",
+                                    "6": "20130412-0036474",
+                                    "7": "No        ",
+                                    "8": "FRAZIER, CYRENTHA LYNETTE",
+                                    "9": "1808  FOX CHASE DR, GOODLETTSVILLE, TN",
+                                    "10": "2.3",
+                                    "11": "GENERAL SERVICES DISTRICT",
+                                    "12": "50000",
+                                    "13": "168200",
+                                    "14": "235700",
+                                    "15": "1986",
+                                    "16": "3",
+                                    "17": "3",
+                                    "18": "0"
+                                },
+                                {
+                                    "0": "16918",
+                                    "1": "007 00 0 130.00",
+                                    "2": "SINGLE FAMILY",
+                                    "3": "1832  FOX CHASE DR, GOODLETTSVILLE",
+                                    "4": "2014-06-10",
+                                    "5": "366000",
+                                    "6": "20140619-0053768",
+                                    "7": "No        ",
+                                    "8": "BONER, CHARLES & LESLIE",
+                                    "9": "1832  FOX CHASE DR, GOODLETTSVILLE, TN",
+                                    "10": "3.5",
+                                    "11": "GENERAL SERVICES DISTRICT",
+                                    "12": "50000",
+                                    "13": "264100",
+                                    "14": "319000",
+                                    "15": "1998",
+                                    "16": "3",
+                                    "17": "3",
+                                    "18": "2"
+                                },
+                                {
+                                    "0": "54582",
+                                    "1": "007 00 0 138.00",
+                                    "2": "SINGLE FAMILY",
+                                    "3": "1864 FOX CHASE  DR, GOODLETTSVILLE",
+                                    "4": "2016-09-26",
+                                    "5": "435000",
+                                    "6": "20160927-0101718",
+                                    "7": "No        ",
+                                    "8": "WILSON, JAMES E. & JOANNE",
+                                    "9": "1864  FOX CHASE DR, GOODLETTSVILLE, TN",
+                                    "10": "2.9",
+                                    "11": "GENERAL SERVICES DISTRICT",
+                                    "12": "50000",
+                                    "13": "216200",
+                                    "14": "298000",
+                                    "15": "1987",
+                                    "16": "4",
+                                    "17": "3",
+                                    "18": "0"
+                                },
+                                {
+                                    "0": "43070",
+                                    "1": "007 00 0 143.00",
+                                    "2": "SINGLE FAMILY",
+                                    "3": "1853  FOX CHASE DR, GOODLETTSVILLE",
+                                    "4": "2016-01-29",
+                                    "5": "255000",
+                                    "6": "20160129-0008913",
+                                    "7": "No        ",
+                                    "8": "BAKER, JAY K. & SUSAN E.",
+                                    "9": "1853  FOX CHASE DR, GOODLETTSVILLE, TN",
+                                    "10": "2.6",
+                                    "11": "GENERAL SERVICES DISTRICT",
+                                    "12": "50000",
+                                    "13": "147300",
+                                    "14": "197300",
+                                    "15": "1985",
+                                    "16": "3",
+                                    "17": "3",
+                                    "18": "0"
+                                },
+                                {
+                                    "0": "22714",
+                                    "1": "007 00 0 149.00",
+                                    "2": "SINGLE FAMILY",
+                                    "3": "1829  FOX CHASE DR, GOODLETTSVILLE",
+                                    "4": "2014-10-10",
+                                    "5": "278000",
+                                    "6": "20141015-0095255",
+                                    "7": "No        ",
+                                    "8": "POST, CHRISTOPHER M. & SAMANTHA C.",
+                                    "9": "1829  FOX CHASE DR, GOODLETTSVILLE, TN",
+                                    "10": "2",
+                                    "11": "GENERAL SERVICES DISTRICT",
+                                    "12": "50000",
+                                    "13": "152300",
+                                    "14": "202300",
+                                    "15": "1984",
+                                    "16": "4",
+                                    "17": "3",
+                                    "18": "0"
+                                },
+                                {
+                                    "0": "18367",
+                                    "1": "007 00 0 151.00",
+                                    "2": "SINGLE FAMILY",
+                                    "3": "1821  FOX CHASE DR, GOODLETTSVILLE",
+                                    "4": "2014-07-16",
+                                    "5": "267000",
+                                    "6": "20140718-0063802",
+                                    "7": "No        ",
+                                    "8": "FIELDS, KAREN L. & BRENT A.",
+                                    "9": "1821  FOX CHASE DR, GOODLETTSVILLE, TN",
+                                    "10": "2",
+                                    "11": "GENERAL SERVICES DISTRICT",
+                                    "12": "50000",
+                                    "13": "190400",
+                                    "14": "259800",
+                                    "15": "1980",
+                                    "16": "3",
+                                    "17": "3",
+                                    "18": "0"
+                                },
+                                {
+                                    "0": "19804",
+                                    "1": "007 14 0 002.00",
+                                    "2": "SINGLE FAMILY",
+                                    "3": "2005  SADIE LN, GOODLETTSVILLE",
+                                    "4": "2014-08-28",
+                                    "5": "171000",
+                                    "6": "20140903-0080214",
+                                    "7": "No        ",
+                                    "8": "HINTON, MICHAEL R. & CYNTHIA M. MOORE",
+                                    "9": "2005  SADIE LN, GOODLETTSVILLE, TN",
+                                    "10": "1.03",
+                                    "11": "GENERAL SERVICES DISTRICT",
+                                    "12": "40000",
+                                    "13": "137900",
+                                    "14": "177900",
+                                    "15": "1976",
+                                    "16": "3",
+                                    "17": "2",
+                                    "18": "0"
+                                },
+                                {
+                                    "0": "54583",
+                                    "1": "007 14 0 024.00",
+                                    "2": "SINGLE FAMILY",
+                                    "3": "1917 GRACELAND  DR, GOODLETTSVILLE",
+                                    "4": "2016-09-27",
+                                    "5": "262000",
+                                    "6": "20161005-0105441",
+                                    "7": "No        ",
+                                    "8": "BAILOR, DARRELL & TAMMY",
+                                    "9": "1917  GRACELAND DR, GOODLETTSVILLE, TN",
+                                    "10": "1.03",
+                                    "11": "GENERAL SERVICES DISTRICT",
+                                    "12": "40000",
+                                    "13": "157900",
+                                    "14": "197900",
+                                    "15": "1978",
+                                    "16": "3",
+                                    "17": "2",
+                                    "18": "0"
+                                },
+                                {
+                                    "0": "36500",
+                                    "1": "007 14 0 026.00",
+                                    "2": "SINGLE FAMILY",
+                                    "3": "1428  SPRINGFIELD HWY, GOODLETTSVILLE",
+                                    "4": "2015-08-14",
+                                    "5": "285000",
+                                    "6": "20150819-0083440",
+                                    "7": "No        ",
+                                    "8": "ROBERTS, MISTY L. & ROBERT M.",
+                                    "9": "1428  SPRINGFIELD HWY, GOODLETTSVILLE, TN",
+                                    "10": "1.67",
+                                    "11": "GENERAL SERVICES DISTRICT",
+                                    "12": "45400",
+                                    "13": "176900",
+                                    "14": "222300",
+                                    "15": "2000",
+                                    "16": "3",
+                                    "17": "2",
+                                    "18": "1"
+                                },
+                                {
+                                    "0": "19805",
+                                    "1": "007 14 0 034.00",
+                                    "2": "SINGLE FAMILY",
+                                    "3": "1420  SPRINGFIELD HWY, GOODLETTSVILLE",
+                                    "4": "2014-08-29",
+                                    "5": "340000",
+                                    "6": "20140909-0082348",
+                                    "7": "No        ",
+                                    "8": "LEE, JEFFREY & NANCY",
+                                    "9": "1420  SPRINGFIELD HWY, GOODLETTSVILLE, TN",
+                                    "10": "1.3",
+                                    "11": "GENERAL SERVICES DISTRICT",
+                                    "12": "40000",
+                                    "13": "179600",
+                                    "14": "219600",
+                                    "15": "1995",
+                                    "16": "5",
+                                    "17": "3",
+                                    "18": "0"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>UniqueID</th><th>ParcelID</th><th>LandUse</th><th>PropertyAddress</th><th>SaleDate</th><th>SalePrice</th><th>LegalReference</th><th>SoldAsVacant</th><th>OwnerName</th><th>OwnerAddress</th><th>Acreage</th><th>TaxDistrict</th><th>LandValue</th><th>BuildingValue</th><th>TotalValue</th><th>YearBuilt</th><th>Bedrooms</th><th>FullBath</th><th>HalfBath</th></tr><tr><td>2045</td><td>007 00 0 125.00</td><td>SINGLE FAMILY</td><td>1808  FOX CHASE DR, GOODLETTSVILLE</td><td>2013-04-09</td><td>240000</td><td>20130412-0036474</td><td>No        </td><td>FRAZIER, CYRENTHA LYNETTE</td><td>1808  FOX CHASE DR, GOODLETTSVILLE, TN</td><td>2.3</td><td>GENERAL SERVICES DISTRICT</td><td>50000</td><td>168200</td><td>235700</td><td>1986</td><td>3</td><td>3</td><td>0</td></tr><tr><td>16918</td><td>007 00 0 130.00</td><td>SINGLE FAMILY</td><td>1832  FOX CHASE DR, GOODLETTSVILLE</td><td>2014-06-10</td><td>366000</td><td>20140619-0053768</td><td>No        </td><td>BONER, CHARLES &amp; LESLIE</td><td>1832  FOX CHASE DR, GOODLETTSVILLE, TN</td><td>3.5</td><td>GENERAL SERVICES DISTRICT</td><td>50000</td><td>264100</td><td>319000</td><td>1998</td><td>3</td><td>3</td><td>2</td></tr><tr><td>54582</td><td>007 00 0 138.00</td><td>SINGLE FAMILY</td><td>1864 FOX CHASE  DR, GOODLETTSVILLE</td><td>2016-09-26</td><td>435000</td><td>20160927-0101718</td><td>No        </td><td>WILSON, JAMES E. &amp; JOANNE</td><td>1864  FOX CHASE DR, GOODLETTSVILLE, TN</td><td>2.9</td><td>GENERAL SERVICES DISTRICT</td><td>50000</td><td>216200</td><td>298000</td><td>1987</td><td>4</td><td>3</td><td>0</td></tr><tr><td>43070</td><td>007 00 0 143.00</td><td>SINGLE FAMILY</td><td>1853  FOX CHASE DR, GOODLETTSVILLE</td><td>2016-01-29</td><td>255000</td><td>20160129-0008913</td><td>No        </td><td>BAKER, JAY K. &amp; SUSAN E.</td><td>1853  FOX CHASE DR, GOODLETTSVILLE, TN</td><td>2.6</td><td>GENERAL SERVICES DISTRICT</td><td>50000</td><td>147300</td><td>197300</td><td>1985</td><td>3</td><td>3</td><td>0</td></tr><tr><td>22714</td><td>007 00 0 149.00</td><td>SINGLE FAMILY</td><td>1829  FOX CHASE DR, GOODLETTSVILLE</td><td>2014-10-10</td><td>278000</td><td>20141015-0095255</td><td>No        </td><td>POST, CHRISTOPHER M. &amp; SAMANTHA C.</td><td>1829  FOX CHASE DR, GOODLETTSVILLE, TN</td><td>2</td><td>GENERAL SERVICES DISTRICT</td><td>50000</td><td>152300</td><td>202300</td><td>1984</td><td>4</td><td>3</td><td>0</td></tr><tr><td>18367</td><td>007 00 0 151.00</td><td>SINGLE FAMILY</td><td>1821  FOX CHASE DR, GOODLETTSVILLE</td><td>2014-07-16</td><td>267000</td><td>20140718-0063802</td><td>No        </td><td>FIELDS, KAREN L. &amp; BRENT A.</td><td>1821  FOX CHASE DR, GOODLETTSVILLE, TN</td><td>2</td><td>GENERAL SERVICES DISTRICT</td><td>50000</td><td>190400</td><td>259800</td><td>1980</td><td>3</td><td>3</td><td>0</td></tr><tr><td>19804</td><td>007 14 0 002.00</td><td>SINGLE FAMILY</td><td>2005  SADIE LN, GOODLETTSVILLE</td><td>2014-08-28</td><td>171000</td><td>20140903-0080214</td><td>No        </td><td>HINTON, MICHAEL R. &amp; CYNTHIA M. MOORE</td><td>2005  SADIE LN, GOODLETTSVILLE, TN</td><td>1.03</td><td>GENERAL SERVICES DISTRICT</td><td>40000</td><td>137900</td><td>177900</td><td>1976</td><td>3</td><td>2</td><td>0</td></tr><tr><td>54583</td><td>007 14 0 024.00</td><td>SINGLE FAMILY</td><td>1917 GRACELAND  DR, GOODLETTSVILLE</td><td>2016-09-27</td><td>262000</td><td>20161005-0105441</td><td>No        </td><td>BAILOR, DARRELL &amp; TAMMY</td><td>1917  GRACELAND DR, GOODLETTSVILLE, TN</td><td>1.03</td><td>GENERAL SERVICES DISTRICT</td><td>40000</td><td>157900</td><td>197900</td><td>1978</td><td>3</td><td>2</td><td>0</td></tr><tr><td>36500</td><td>007 14 0 026.00</td><td>SINGLE FAMILY</td><td>1428  SPRINGFIELD HWY, GOODLETTSVILLE</td><td>2015-08-14</td><td>285000</td><td>20150819-0083440</td><td>No        </td><td>ROBERTS, MISTY L. &amp; ROBERT M.</td><td>1428  SPRINGFIELD HWY, GOODLETTSVILLE, TN</td><td>1.67</td><td>GENERAL SERVICES DISTRICT</td><td>45400</td><td>176900</td><td>222300</td><td>2000</td><td>3</td><td>2</td><td>1</td></tr><tr><td>19805</td><td>007 14 0 034.00</td><td>SINGLE FAMILY</td><td>1420  SPRINGFIELD HWY, GOODLETTSVILLE</td><td>2014-08-29</td><td>340000</td><td>20140909-0082348</td><td>No        </td><td>LEE, JEFFREY &amp; NANCY</td><td>1420  SPRINGFIELD HWY, GOODLETTSVILLE, TN</td><td>1.3</td><td>GENERAL SERVICES DISTRICT</td><td>40000</td><td>179600</td><td>219600</td><td>1995</td><td>5</td><td>3</td><td>0</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 2
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "## **BackUp And Restore Section**"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "6613712f-1ade-4ddf-9076-673829382b19"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- Backing up data before updating\n",
+                "-- Drop a table called 'NashvilleHousingbkp' in schema 'dbo'\n",
+                "-- Drop the table if it already exists\n",
+                "IF OBJECT_ID('[dbo].[NashvilleHousingbkp]', 'U') IS NOT NULL\n",
+                "DROP TABLE [dbo].[NashvilleHousingbkp]\n",
+                "GO\n",
+                "Select * into NashvilleHousingbkp \n",
+                "from NashvilleHousing;"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "d2ac9446-f63d-4fc4-8696-4e63d51867ce"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(56477 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.199"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 25
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- Cell to restore backup if required\n",
+                "-- Drop a table called 'NashvilleHousing' in schema 'dbo'\n",
+                "-- Drop the table if it already exists\n",
+                "IF OBJECT_ID('[dbo].[NashvilleHousing]', 'U') IS NOT NULL\n",
+                "DROP TABLE [dbo].[NashvilleHousing]\n",
+                "GO\n",
+                "Select * into NashvilleHousing \n",
+                "from NashvilleHousingbkp\n",
+                "GO"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "f4ab1021-4f0d-4b39-89ea-bd89456405b4",
+                "tags": []
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Commands completed successfully."
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(56477 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.092"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 61
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "## **Datatype Updates**"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "0175733f-5d5f-4e35-8e98-66c8f836644b"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- Checking SalePrice column\n",
+                "select top 5 SalePrice, convert(bigint, SalePrice) as SalePriceConverted\n",
+                "from NashvilleHousing;"
+            ],
+            "metadata": {
+                "azdata_cell_guid": "36edd83d-5031-45c5-afa3-67c8a47d93db",
+                "language": "sql",
+                "tags": []
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(5 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.013"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 62,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "SalePrice"
+                                    },
+                                    {
+                                        "name": "SalePriceConverted"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "45000",
+                                    "1": "45000"
+                                },
+                                {
+                                    "0": "129900",
+                                    "1": "129900"
+                                },
+                                {
+                                    "0": "422900",
+                                    "1": "422900"
+                                },
+                                {
+                                    "0": "422900",
+                                    "1": "422900"
+                                },
+                                {
+                                    "0": "290000",
+                                    "1": "290000"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>SalePrice</th><th>SalePriceConverted</th></tr><tr><td>45000</td><td>45000</td></tr><tr><td>129900</td><td>129900</td></tr><tr><td>422900</td><td>422900</td></tr><tr><td>422900</td><td>422900</td></tr><tr><td>290000</td><td>290000</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 62
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- Convert Sale price to int avoid decimal places\n",
+                "Alter TABLE NashvilleHousing\n",
+                "Alter COLUMN SalePrice bigint; "
+            ],
+            "metadata": {
+                "azdata_cell_guid": "749b1552-fef3-4136-9739-b2903c72f3c3",
+                "language": "sql",
+                "tags": []
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Commands completed successfully."
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.009"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 63
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select top 5 SalePrice from NashvilleHousing;"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "aa0d3924-9133-466e-8562-0ee71c8bc365"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(5 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.006"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 64,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "SalePrice"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "45000"
+                                },
+                                {
+                                    "0": "129900"
+                                },
+                                {
+                                    "0": "422900"
+                                },
+                                {
+                                    "0": "422900"
+                                },
+                                {
+                                    "0": "290000"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>SalePrice</th></tr><tr><td>45000</td></tr><tr><td>129900</td></tr><tr><td>422900</td></tr><tr><td>422900</td></tr><tr><td>290000</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 64
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "## **Data Cleaning/Imputation**"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "7d400142-0d10-42c4-a643-bb252155a08c"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "### **Imputing Property Address Values**"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "03a5b917-7f28-486e-9e4f-451957350e3f"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "Some property addresses have NULL addresses but shares the same parcelId with other properties where the property Address field is populated. So these NULL property addresses can be updated using the corresponding records that has the same parcelDs.\n",
+                "\n",
+                "Here is the algorithm used\n",
+                "\n",
+                "1. Create a Common Table Expression for finding the previous and next addresses and parcelDs partitioned on pracelIDs\n",
+                "2. Find the addresses that has null in property address which has property address populated in the next or previous row while having the same parcelID\n",
+                "3. Update the address field using the previous or next address"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "ef918d1e-c4d6-46fd-8221-0d30bd24365d"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "with propAddCTE as (select parcelId\n",
+                ", propertyAddress\n",
+                ", LAG(propertyAddress) over (PARTITION by parcelId order by parcelId) as PrevPropertyAddress\n",
+                ", LEAD(PropertyAddress) over (partition by parcelId order by parcelId) as NextPropertyAddress\n",
+                ", LAG(ParcelID) over (partition by parcelId order by parcelId) as PrevParcelId\n",
+                ", LEAD(ParcelID) over (partition by parcelId order by parcelId) as NextPracelId\n",
+                "from NashvilleHousing)\n",
+                "\n",
+                "select top 5 * from propAddCTE\n",
+                "where propertyAddress is null\n",
+                "and (((ParcelID = PrevParcelId) and (PrevPropertyAddress is not null) ) \n",
+                "        or ((ParcelID = NextPracelId) and (NextPropertyAddress is not null)))"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "b1aa8a87-23fd-4e47-be67-bbc6b9b424ce"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(5 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.176"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 65,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "parcelId"
+                                    },
+                                    {
+                                        "name": "propertyAddress"
+                                    },
+                                    {
+                                        "name": "PrevPropertyAddress"
+                                    },
+                                    {
+                                        "name": "NextPropertyAddress"
+                                    },
+                                    {
+                                        "name": "PrevParcelId"
+                                    },
+                                    {
+                                        "name": "NextPracelId"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "025 07 0 031.00",
+                                    "1": "NULL",
+                                    "2": "410  ROSEHILL CT, GOODLETTSVILLE",
+                                    "3": "NULL",
+                                    "4": "025 07 0 031.00",
+                                    "5": "NULL"
+                                },
+                                {
+                                    "0": "026 01 0 069.00",
+                                    "1": "NULL",
+                                    "2": "141  TWO MILE PIKE, GOODLETTSVILLE",
+                                    "3": "NULL",
+                                    "4": "026 01 0 069.00",
+                                    "5": "NULL"
+                                },
+                                {
+                                    "0": "026 05 0 017.00",
+                                    "1": "NULL",
+                                    "2": "208  EAST AVE, GOODLETTSVILLE",
+                                    "3": "NULL",
+                                    "4": "026 05 0 017.00",
+                                    "5": "NULL"
+                                },
+                                {
+                                    "0": "033 06 0A 002.00",
+                                    "1": "NULL",
+                                    "2": "1116  CAMPBELL RD, GOODLETTSVILLE",
+                                    "3": "NULL",
+                                    "4": "033 06 0A 002.00",
+                                    "5": "NULL"
+                                },
+                                {
+                                    "0": "034 03 0 059.00",
+                                    "1": "NULL",
+                                    "2": "2117  PAULA DR, MADISON",
+                                    "3": "2117  PAULA DR, MADISON",
+                                    "4": "034 03 0 059.00",
+                                    "5": "034 03 0 059.00"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>parcelId</th><th>propertyAddress</th><th>PrevPropertyAddress</th><th>NextPropertyAddress</th><th>PrevParcelId</th><th>NextPracelId</th></tr><tr><td>025 07 0 031.00</td><td>NULL</td><td>410  ROSEHILL CT, GOODLETTSVILLE</td><td>NULL</td><td>025 07 0 031.00</td><td>NULL</td></tr><tr><td>026 01 0 069.00</td><td>NULL</td><td>141  TWO MILE PIKE, GOODLETTSVILLE</td><td>NULL</td><td>026 01 0 069.00</td><td>NULL</td></tr><tr><td>026 05 0 017.00</td><td>NULL</td><td>208  EAST AVE, GOODLETTSVILLE</td><td>NULL</td><td>026 05 0 017.00</td><td>NULL</td></tr><tr><td>033 06 0A 002.00</td><td>NULL</td><td>1116  CAMPBELL RD, GOODLETTSVILLE</td><td>NULL</td><td>033 06 0A 002.00</td><td>NULL</td></tr><tr><td>034 03 0 059.00</td><td>NULL</td><td>2117  PAULA DR, MADISON</td><td>2117  PAULA DR, MADISON</td><td>034 03 0 059.00</td><td>034 03 0 059.00</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 65
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- Checking a Sample ParcelId\n",
+                "select * from NashvilleHousing where ParcelID = '026 06 0A 038.00'"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "9f28cc95-9858-4cbd-8bc3-7de32a83842a",
+                "tags": []
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(2 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.032"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 66,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "UniqueID"
+                                    },
+                                    {
+                                        "name": "ParcelID"
+                                    },
+                                    {
+                                        "name": "LandUse"
+                                    },
+                                    {
+                                        "name": "PropertyAddress"
+                                    },
+                                    {
+                                        "name": "SaleDate"
+                                    },
+                                    {
+                                        "name": "SalePrice"
+                                    },
+                                    {
+                                        "name": "LegalReference"
+                                    },
+                                    {
+                                        "name": "SoldAsVacant"
+                                    },
+                                    {
+                                        "name": "OwnerName"
+                                    },
+                                    {
+                                        "name": "OwnerAddress"
+                                    },
+                                    {
+                                        "name": "Acreage"
+                                    },
+                                    {
+                                        "name": "TaxDistrict"
+                                    },
+                                    {
+                                        "name": "LandValue"
+                                    },
+                                    {
+                                        "name": "BuildingValue"
+                                    },
+                                    {
+                                        "name": "TotalValue"
+                                    },
+                                    {
+                                        "name": "YearBuilt"
+                                    },
+                                    {
+                                        "name": "Bedrooms"
+                                    },
+                                    {
+                                        "name": "FullBath"
+                                    },
+                                    {
+                                        "name": "HalfBath"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "19828",
+                                    "1": "026 06 0A 038.00",
+                                    "2": "RESIDENTIAL CONDO",
+                                    "3": "109  CANTON CT, GOODLETTSVILLE",
+                                    "4": "2014-08-21",
+                                    "5": "127000",
+                                    "6": "20140825-0077233",
+                                    "7": "No        ",
+                                    "8": "NULL",
+                                    "9": "NULL",
+                                    "10": "NULL",
+                                    "11": "NULL",
+                                    "12": "NULL",
+                                    "13": "NULL",
+                                    "14": "NULL",
+                                    "15": "NULL",
+                                    "16": "NULL",
+                                    "17": "NULL",
+                                    "18": "NULL"
+                                },
+                                {
+                                    "0": "53147",
+                                    "1": "026 06 0A 038.00",
+                                    "2": "RESIDENTIAL CONDO",
+                                    "3": "NULL",
+                                    "4": "2016-08-25",
+                                    "5": "144900",
+                                    "6": "20160831-0091567",
+                                    "7": "No        ",
+                                    "8": "NULL",
+                                    "9": "NULL",
+                                    "10": "NULL",
+                                    "11": "NULL",
+                                    "12": "NULL",
+                                    "13": "NULL",
+                                    "14": "NULL",
+                                    "15": "NULL",
+                                    "16": "NULL",
+                                    "17": "NULL",
+                                    "18": "NULL"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>UniqueID</th><th>ParcelID</th><th>LandUse</th><th>PropertyAddress</th><th>SaleDate</th><th>SalePrice</th><th>LegalReference</th><th>SoldAsVacant</th><th>OwnerName</th><th>OwnerAddress</th><th>Acreage</th><th>TaxDistrict</th><th>LandValue</th><th>BuildingValue</th><th>TotalValue</th><th>YearBuilt</th><th>Bedrooms</th><th>FullBath</th><th>HalfBath</th></tr><tr><td>19828</td><td>026 06 0A 038.00</td><td>RESIDENTIAL CONDO</td><td>109  CANTON CT, GOODLETTSVILLE</td><td>2014-08-21</td><td>127000</td><td>20140825-0077233</td><td>No        </td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td></tr><tr><td>53147</td><td>026 06 0A 038.00</td><td>RESIDENTIAL CONDO</td><td>NULL</td><td>2016-08-25</td><td>144900</td><td>20160831-0091567</td><td>No        </td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td><td>NULL</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 66
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "Check how many records are there with null as property address"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "40c82c31-c989-4bb7-b59c-41800432c5e4"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select count(*) as NullAddressCount from NashvilleHousing where PropertyAddress is null"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "061ac91b-a585-46af-bd64-21871b197c38"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(1 row affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.038"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 67,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "NullAddressCount"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "29"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>NullAddressCount</th></tr><tr><td>29</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 67
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "Update first set of addresses"
+            ],
+            "metadata": {
+                "language": "",
+                "azdata_cell_guid": "6c87e0ce-0a66-4876-b5ea-8ba9d7117a23"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "with propAddCTE as (select parcelId\n",
+                ", propertyAddress\n",
+                ", LAG(propertyAddress) over (PARTITION by parcelId order by parcelId) as PrevPropertyAddress\n",
+                ", LEAD(PropertyAddress) over (partition by parcelId order by parcelId) as NextPropertyAddress\n",
+                ", LAG(ParcelID) over (partition by parcelId order by parcelId) as PrevParcelId\n",
+                ", LEAD(ParcelID) over (partition by parcelId order by parcelId) as NextParcelId\n",
+                "from NashvilleHousing)\n",
+                "-- Update addresses\n",
+                "Update NashvilleHousing \n",
+                "set propertyAddress = pa.PrevPropertyAddress \n",
+                "from propAddCTE pa \n",
+                "join NashvilleHousing nh on nh.ParcelID = pa.parcelId\n",
+                "where pa.parcelId = nh.parcelId and (pa.parcelId = pa.PrevParcelId)\n",
+                "and nh.PropertyAddress is null and pa.PrevPropertyAddress is not null "
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "6a3d5d80-efe9-443c-9e09-bdce7d96b4ca"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(28 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.142"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 68
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select count(*) as NullAddressCount from NashvilleHousing where PropertyAddress is null"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "b2e5c539-a4ef-400a-a29c-11334a4ddf52"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(1 row affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.026"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 69,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "NullAddressCount"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "1"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>NullAddressCount</th></tr><tr><td>1</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 69
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "Update the second set of addresses"
+            ],
+            "metadata": {
+                "language": "",
+                "azdata_cell_guid": "6b4c7979-441d-4b30-9484-d61c9d39a53a"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "with propAddCTE as (select parcelId\n",
+                ", propertyAddress\n",
+                ", LAG(propertyAddress) over (PARTITION by parcelId order by parcelId) as PrevPropertyAddress\n",
+                ", LEAD(PropertyAddress) over (partition by parcelId order by parcelId) as NextPropertyAddress\n",
+                ", LAG(ParcelID) over (partition by parcelId order by parcelId) as PrevParcelId\n",
+                ", LEAD(ParcelID) over (partition by parcelId order by parcelId) as NextParcelId\n",
+                "from NashvilleHousing)\n",
+                "-- Update addresses\n",
+                "Update NashvilleHousing \n",
+                "set propertyAddress = pa.NextPropertyAddress \n",
+                "from propAddCTE pa \n",
+                "join NashvilleHousing nh on nh.ParcelID = pa.parcelId\n",
+                "where pa.parcelId = nh.parcelId and (pa.parcelId = pa.NextParcelId)\n",
+                "and nh.PropertyAddress is null and pa.NextPropertyAddress is not null "
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "bfb63187-6e1b-4969-afdd-bbf23ead0f1f"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(1 row affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.112"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 70
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select count(*) as NullAddressCount from NashvilleHousing where PropertyAddress is null"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "243fa1df-41e9-4ca6-b9ee-fcf84537c250"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(1 row affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.046"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 71,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "NullAddressCount"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "0"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>NullAddressCount</th></tr><tr><td>0</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 71
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "### **Property Address Split**"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "0d8213f1-faa4-48b3-9846-24b943a34917"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "Split the property address field into Street and City"
+            ],
+            "metadata": {
+                "language": "",
+                "azdata_cell_guid": "c5e67b37-cd8c-4ace-84bc-8ba667dc803c"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select top 10 propertyAddress,\n",
+                " substring(propertyAddress,1,CHARINDEX(',',PropertyAddress)-1) as PropertyStreet,\n",
+                " substring(PropertyAddress,CHARINDEX(',',PropertyAddress)+1,len(PropertyAddress)) as PropertyCity\n",
+                "from NashvilleHousing"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "4d8c197c-dad8-414b-b52e-76ba68a91eb8"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(10 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.013"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 77,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "propertyAddress"
+                                    },
+                                    {
+                                        "name": "StreetName"
+                                    },
+                                    {
+                                        "name": "City"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "134  HAMBLEN AVE, OLD HICKORY",
+                                    "1": "134  HAMBLEN AVE",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "138 HAMBLEN  AVE, OLD HICKORY",
+                                    "1": "138 HAMBLEN  AVE",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "800  CERRITO LNDG, OLD HICKORY",
+                                    "1": "800  CERRITO LNDG",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "804  CERRITO LNDG, OLD HICKORY",
+                                    "1": "804  CERRITO LNDG",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "808 CERRITO  LNDG, OLD HICKORY",
+                                    "1": "808 CERRITO  LNDG",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "812 CERRITO  LNDG, OLD HICKORY",
+                                    "1": "812 CERRITO  LNDG",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "608  LAKEMEADE PT, OLD HICKORY",
+                                    "1": "608  LAKEMEADE PT",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "520  NAWAKWA TRL, MADISON",
+                                    "1": "520  NAWAKWA TRL",
+                                    "2": " MADISON"
+                                },
+                                {
+                                    "0": "1524  JOE PYRON DR, MADISON",
+                                    "1": "1524  JOE PYRON DR",
+                                    "2": " MADISON"
+                                },
+                                {
+                                    "0": "1516  JOE PYRON DR, MADISON",
+                                    "1": "1516  JOE PYRON DR",
+                                    "2": " MADISON"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>propertyAddress</th><th>StreetName</th><th>City</th></tr><tr><td>134  HAMBLEN AVE, OLD HICKORY</td><td>134  HAMBLEN AVE</td><td> OLD HICKORY</td></tr><tr><td>138 HAMBLEN  AVE, OLD HICKORY</td><td>138 HAMBLEN  AVE</td><td> OLD HICKORY</td></tr><tr><td>800  CERRITO LNDG, OLD HICKORY</td><td>800  CERRITO LNDG</td><td> OLD HICKORY</td></tr><tr><td>804  CERRITO LNDG, OLD HICKORY</td><td>804  CERRITO LNDG</td><td> OLD HICKORY</td></tr><tr><td>808 CERRITO  LNDG, OLD HICKORY</td><td>808 CERRITO  LNDG</td><td> OLD HICKORY</td></tr><tr><td>812 CERRITO  LNDG, OLD HICKORY</td><td>812 CERRITO  LNDG</td><td> OLD HICKORY</td></tr><tr><td>608  LAKEMEADE PT, OLD HICKORY</td><td>608  LAKEMEADE PT</td><td> OLD HICKORY</td></tr><tr><td>520  NAWAKWA TRL, MADISON</td><td>520  NAWAKWA TRL</td><td> MADISON</td></tr><tr><td>1524  JOE PYRON DR, MADISON</td><td>1524  JOE PYRON DR</td><td> MADISON</td></tr><tr><td>1516  JOE PYRON DR, MADISON</td><td>1516  JOE PYRON DR</td><td> MADISON</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 77
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- Add a new column '[PropertyStreet]', [PropertyCity] to table '[NashvilleHousing]' in schema '[dbo]'\n",
+                "ALTER TABLE [dbo].[NashvilleHousing]\n",
+                "    ADD [PropertyStreet] varchar(100)  NULL,\n",
+                "        [PropertyCity] varchar(100) NULL\n",
+                "GO"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "055c5223-8fcc-4b7d-a1c8-34864669fd22"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Commands completed successfully."
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.077"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 78
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- Update rows in table '[NashvilleHousing]' in schema '[dbo]'\n",
+                "UPDATE [dbo].[NashvilleHousing]\n",
+                "SET\n",
+                "    [PropertyStreet] = substring(propertyAddress,1,CHARINDEX(',',PropertyAddress)-1),\n",
+                "    [PropertyCity] = substring(PropertyAddress,CHARINDEX(',',PropertyAddress)+1,len(PropertyAddress))\n",
+                "GO"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "21104e87-bf7d-4807-aaa2-640c7550faa5"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(56477 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.654"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 79
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select top 10 propertyAddress, PropertyStreet, PropertyCity from NashvilleHousing"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "d94f5ee1-9bb6-4e75-9340-cf3f961f6203"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(10 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.023"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 84,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "propertyAddress"
+                                    },
+                                    {
+                                        "name": "propertyStreet"
+                                    },
+                                    {
+                                        "name": "propertyCity"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "134  HAMBLEN AVE, OLD HICKORY",
+                                    "1": "134  HAMBLEN AVE",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "138 HAMBLEN  AVE, OLD HICKORY",
+                                    "1": "138 HAMBLEN  AVE",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "800  CERRITO LNDG, OLD HICKORY",
+                                    "1": "800  CERRITO LNDG",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "804  CERRITO LNDG, OLD HICKORY",
+                                    "1": "804  CERRITO LNDG",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "808 CERRITO  LNDG, OLD HICKORY",
+                                    "1": "808 CERRITO  LNDG",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "812 CERRITO  LNDG, OLD HICKORY",
+                                    "1": "812 CERRITO  LNDG",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "608  LAKEMEADE PT, OLD HICKORY",
+                                    "1": "608  LAKEMEADE PT",
+                                    "2": " OLD HICKORY"
+                                },
+                                {
+                                    "0": "520  NAWAKWA TRL, MADISON",
+                                    "1": "520  NAWAKWA TRL",
+                                    "2": " MADISON"
+                                },
+                                {
+                                    "0": "1524  JOE PYRON DR, MADISON",
+                                    "1": "1524  JOE PYRON DR",
+                                    "2": " MADISON"
+                                },
+                                {
+                                    "0": "1516  JOE PYRON DR, MADISON",
+                                    "1": "1516  JOE PYRON DR",
+                                    "2": " MADISON"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>propertyAddress</th><th>propertyStreet</th><th>propertyCity</th></tr><tr><td>134  HAMBLEN AVE, OLD HICKORY</td><td>134  HAMBLEN AVE</td><td> OLD HICKORY</td></tr><tr><td>138 HAMBLEN  AVE, OLD HICKORY</td><td>138 HAMBLEN  AVE</td><td> OLD HICKORY</td></tr><tr><td>800  CERRITO LNDG, OLD HICKORY</td><td>800  CERRITO LNDG</td><td> OLD HICKORY</td></tr><tr><td>804  CERRITO LNDG, OLD HICKORY</td><td>804  CERRITO LNDG</td><td> OLD HICKORY</td></tr><tr><td>808 CERRITO  LNDG, OLD HICKORY</td><td>808 CERRITO  LNDG</td><td> OLD HICKORY</td></tr><tr><td>812 CERRITO  LNDG, OLD HICKORY</td><td>812 CERRITO  LNDG</td><td> OLD HICKORY</td></tr><tr><td>608  LAKEMEADE PT, OLD HICKORY</td><td>608  LAKEMEADE PT</td><td> OLD HICKORY</td></tr><tr><td>520  NAWAKWA TRL, MADISON</td><td>520  NAWAKWA TRL</td><td> MADISON</td></tr><tr><td>1524  JOE PYRON DR, MADISON</td><td>1524  JOE PYRON DR</td><td> MADISON</td></tr><tr><td>1516  JOE PYRON DR, MADISON</td><td>1516  JOE PYRON DR</td><td> MADISON</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 84
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "### **Owner Address Split using PARSENAME**\n",
+                "\n",
+                "PARSENAME command parses a string using '.' or periods. So, as a first step we should convert all commas to periods before using PARSENAME. Note: The function parses a string from right to left."
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "5cf54bff-7275-4309-82bb-f00688517734"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select top 5 ownerAddress\n",
+                ", PARSENAME(REPLACE(ownerAddress,',','.'),3) as OwnerStreet\n",
+                ", PARSENAME(REPLACE(ownerAddress,',','.'),2) as OwnerCity\n",
+                ", PARSENAME(REPLACE(ownerAddress,',','.'),1) as OwnerState\n",
+                "from NashvilleHousing"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "573f689e-a3a4-4e6d-b1cb-0f9b0902e5ff"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(5 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.033"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 87,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "ownerAddress"
+                                    },
+                                    {
+                                        "name": "OwnerStreet"
+                                    },
+                                    {
+                                        "name": "OwnerCity"
+                                    },
+                                    {
+                                        "name": "OwnerState"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "134  HAMBLEN AVE, OLD HICKORY, TN",
+                                    "1": "134  HAMBLEN AVE",
+                                    "2": " OLD HICKORY",
+                                    "3": " TN"
+                                },
+                                {
+                                    "0": "138  HAMBLEN AVE, OLD HICKORY, TN",
+                                    "1": "138  HAMBLEN AVE",
+                                    "2": " OLD HICKORY",
+                                    "3": " TN"
+                                },
+                                {
+                                    "0": "800  CERRITO LNDG, OLD HICKORY, TN",
+                                    "1": "800  CERRITO LNDG",
+                                    "2": " OLD HICKORY",
+                                    "3": " TN"
+                                },
+                                {
+                                    "0": "804  CERRITO LNDG, OLD HICKORY, TN",
+                                    "1": "804  CERRITO LNDG",
+                                    "2": " OLD HICKORY",
+                                    "3": " TN"
+                                },
+                                {
+                                    "0": "808  CERRITO LNDG, OLD HICKORY, TN",
+                                    "1": "808  CERRITO LNDG",
+                                    "2": " OLD HICKORY",
+                                    "3": " TN"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>ownerAddress</th><th>OwnerStreet</th><th>OwnerCity</th><th>OwnerState</th></tr><tr><td>134  HAMBLEN AVE, OLD HICKORY, TN</td><td>134  HAMBLEN AVE</td><td> OLD HICKORY</td><td> TN</td></tr><tr><td>138  HAMBLEN AVE, OLD HICKORY, TN</td><td>138  HAMBLEN AVE</td><td> OLD HICKORY</td><td> TN</td></tr><tr><td>800  CERRITO LNDG, OLD HICKORY, TN</td><td>800  CERRITO LNDG</td><td> OLD HICKORY</td><td> TN</td></tr><tr><td>804  CERRITO LNDG, OLD HICKORY, TN</td><td>804  CERRITO LNDG</td><td> OLD HICKORY</td><td> TN</td></tr><tr><td>808  CERRITO LNDG, OLD HICKORY, TN</td><td>808  CERRITO LNDG</td><td> OLD HICKORY</td><td> TN</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 87
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- Add new columns '[OwnerStreet]', '[OwnerCity]' and '[OwnerState]' to table '[NashvilleHousing]' in schema '[dbo]'\n",
+                "ALTER TABLE [dbo].[NashvilleHousing]\n",
+                "    ADD [OwnerStreet] varchar(100)  NULL,\n",
+                "        [OwnerCity] varchar(100) NULL,\n",
+                "        [OwnerState] varchar(25) NULL\n",
+                "GO"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "c1a3e6a0-e135-4e1d-9191-8b9cc529a31f"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Commands completed successfully."
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.065"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 89
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- Update rows in table '[NashvilleHousing]' in schema '[dbo]'\n",
+                "UPDATE [dbo].[NashvilleHousing]\n",
+                "SET\n",
+                "    [OwnerStreet]   = PARSENAME(REPLACE(ownerAddress,',','.'),3),\n",
+                "    [OwnerCity]     = PARSENAME(REPLACE(ownerAddress,',','.'),2),\n",
+                "    [OwnerState]    = PARSENAME(REPLACE(ownerAddress,',','.'),1)\n",
+                "GO"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "a46da3b6-c74f-48f4-8b5e-3303cf995b54"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(56477 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.512"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 90
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select top 5 ownerAddress\n",
+                ", OwnerStreet\n",
+                ", OwnerCity\n",
+                ", OwnerState\n",
+                "from NashvilleHousing"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "85bdaed1-3fea-46a4-9beb-8f194ffb862f",
+                "tags": [
+                    "hide_input"
+                ]
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(5 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.031"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "execution_count": 91,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "ownerAddress"
+                                    },
+                                    {
+                                        "name": "OwnerStreet"
+                                    },
+                                    {
+                                        "name": "OwnerCity"
+                                    },
+                                    {
+                                        "name": "OwnerState"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "134  HAMBLEN AVE, OLD HICKORY, TN",
+                                    "1": "134  HAMBLEN AVE",
+                                    "2": " OLD HICKORY",
+                                    "3": " TN"
+                                },
+                                {
+                                    "0": "138  HAMBLEN AVE, OLD HICKORY, TN",
+                                    "1": "138  HAMBLEN AVE",
+                                    "2": " OLD HICKORY",
+                                    "3": " TN"
+                                },
+                                {
+                                    "0": "800  CERRITO LNDG, OLD HICKORY, TN",
+                                    "1": "800  CERRITO LNDG",
+                                    "2": " OLD HICKORY",
+                                    "3": " TN"
+                                },
+                                {
+                                    "0": "804  CERRITO LNDG, OLD HICKORY, TN",
+                                    "1": "804  CERRITO LNDG",
+                                    "2": " OLD HICKORY",
+                                    "3": " TN"
+                                },
+                                {
+                                    "0": "808  CERRITO LNDG, OLD HICKORY, TN",
+                                    "1": "808  CERRITO LNDG",
+                                    "2": " OLD HICKORY",
+                                    "3": " TN"
+                                }
+                            ]
+                        },
+                        "text/html": "<table><tr><th>ownerAddress</th><th>OwnerStreet</th><th>OwnerCity</th><th>OwnerState</th></tr><tr><td>134  HAMBLEN AVE, OLD HICKORY, TN</td><td>134  HAMBLEN AVE</td><td> OLD HICKORY</td><td> TN</td></tr><tr><td>138  HAMBLEN AVE, OLD HICKORY, TN</td><td>138  HAMBLEN AVE</td><td> OLD HICKORY</td><td> TN</td></tr><tr><td>800  CERRITO LNDG, OLD HICKORY, TN</td><td>800  CERRITO LNDG</td><td> OLD HICKORY</td><td> TN</td></tr><tr><td>804  CERRITO LNDG, OLD HICKORY, TN</td><td>804  CERRITO LNDG</td><td> OLD HICKORY</td><td> TN</td></tr><tr><td>808  CERRITO LNDG, OLD HICKORY, TN</td><td>808  CERRITO LNDG</td><td> OLD HICKORY</td><td> TN</td></tr></table>"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 91
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "### **SoldAsVacant Field Update**\n",
+                "\n",
+                "The SoldAsVacant field is a field that is supposed to have only 'Yes' and 'No' values. Let us take a look at the column."
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "9de8160d-f810-44ad-9e49-a4056bbb2666"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select DISTINCT SoldasVacant\n",
+                ", count(*) as count \n",
+                "from NashvilleHousing\n",
+                "group by SoldAsVacant\n",
+                "order by 2"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "49472bd0-10aa-4d53-8386-c16dbba0e39a"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(4 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.047"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "metadata": {},
+                    "execution_count": 2,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "SoldasVacant"
+                                    },
+                                    {
+                                        "name": "count"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "Y         ",
+                                    "1": "52"
+                                },
+                                {
+                                    "0": "N         ",
+                                    "1": "399"
+                                },
+                                {
+                                    "0": "Yes       ",
+                                    "1": "4623"
+                                },
+                                {
+                                    "0": "No        ",
+                                    "1": "51403"
+                                }
+                            ]
+                        },
+                        "text/html": [
+                            "<table>",
+                            "<tr><th>SoldasVacant</th><th>count</th></tr>",
+                            "<tr><td>Y         </td><td>52</td></tr>",
+                            "<tr><td>N         </td><td>399</td></tr>",
+                            "<tr><td>Yes       </td><td>4623</td></tr>",
+                            "<tr><td>No        </td><td>51403</td></tr>",
+                            "</table>"
+                        ]
+                    }
+                }
+            ],
+            "execution_count": 2
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "Changing all 'Y' to 'Yes' and 'N' to 'No's"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "765ee050-95c7-49eb-be67-92dd70e3512f"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "-- Update rows in table '[TableName]' in schema '[dbo]'\n",
+                "UPDATE [dbo].[NashvilleHousing]\n",
+                "SET\n",
+                "    [SoldAsVacant] = CASE   WHEN SoldAsVacant = 'Y' THEN 'Yes'\n",
+                "                            WHEN SoldAsVacant = 'N' THEN 'No'\n",
+                "                            ELSE SoldAsVacant\n",
+                "                     END\n",
+                "GO "
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "9b6e46bc-c585-4c71-a7b1-04f0e3fd6a5b"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(56477 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.186"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 7
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select DISTINCT SoldasVacant\n",
+                ", count(*) as count \n",
+                "from NashvilleHousing\n",
+                "group by SoldAsVacant\n",
+                "order by 2"
+            ],
+            "metadata": {
+                "language": "sql",
+                "azdata_cell_guid": "81282051-41fd-4bbf-9743-9fc7f2483bb1"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(2 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.163"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "metadata": {},
+                    "execution_count": 8,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "SoldasVacant"
+                                    },
+                                    {
+                                        "name": "count"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "Yes       ",
+                                    "1": "4675"
+                                },
+                                {
+                                    "0": "No        ",
+                                    "1": "51802"
+                                }
+                            ]
+                        },
+                        "text/html": [
+                            "<table>",
+                            "<tr><th>SoldasVacant</th><th>count</th></tr>",
+                            "<tr><td>Yes       </td><td>4675</td></tr>",
+                            "<tr><td>No        </td><td>51802</td></tr>",
+                            "</table>"
+                        ]
+                    }
+                }
+            ],
+            "execution_count": 8
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "### **Remove Duplicates**\n",
+                "\n",
+                "The table has some properties that are duplicates. We are considering those properties that has same <span style=\"color: rgb(33, 33, 33); font-family: Menlo, Monaco, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre;\">ParcelID, propertyAddress, SaleDate, legalReference as duplicates</span>"
+            ],
+            "metadata": {
+                "language": "",
+                "azdata_cell_guid": "684b710d-ba99-48b3-91b9-0f673d47bac2"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "select top 5 * from (select ParcelID, propertyAddress, SaleDate, legalReference, count(*) as cnt from NashvilleHousing\n",
+                "group by ParcelID, propertyAddress, SaleDate,legalReference) fq\n",
+                "where  cnt > 1"
+            ],
+            "metadata": {
+                "language": "",
+                "azdata_cell_guid": "386f4b26-ae79-4ae7-bcc1-e36488d3d788",
+                "tags": [
+                    "hide_input"
+                ]
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(5 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.107"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "execute_result",
+                    "metadata": {},
+                    "execution_count": 18,
+                    "data": {
+                        "application/vnd.dataresource+json": {
+                            "schema": {
+                                "fields": [
+                                    {
+                                        "name": "ParcelID"
+                                    },
+                                    {
+                                        "name": "propertyAddress"
+                                    },
+                                    {
+                                        "name": "SaleDate"
+                                    },
+                                    {
+                                        "name": "legalReference"
+                                    },
+                                    {
+                                        "name": "cnt"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "0": "081 07 0 265.00",
+                                    "1": "1806  15TH AVE N, NASHVILLE",
+                                    "2": "2015-02-17",
+                                    "3": "20150223-0015122",
+                                    "4": "2"
+                                },
+                                {
+                                    "0": "081 11 0 168.00",
+                                    "1": "1710  DR D B TODD JR BLVD, NASHVILLE",
+                                    "2": "2015-02-13",
+                                    "3": "20150218-0013602",
+                                    "4": "2"
+                                },
+                                {
+                                    "0": "081 11 0 495.00",
+                                    "1": "1718  ARTHUR AVE, NASHVILLE",
+                                    "2": "2015-02-09",
+                                    "3": "20150210-0012450",
+                                    "4": "2"
+                                },
+                                {
+                                    "0": "081 15 0 472.00",
+                                    "1": "1818 B  SCOVEL ST, NASHVILLE",
+                                    "2": "2015-02-20",
+                                    "3": "20150223-0015257",
+                                    "4": "2"
+                                },
+                                {
+                                    "0": "081 15 0 263.00",
+                                    "1": "1520  14TH AVE N, NASHVILLE",
+                                    "2": "2015-02-12",
+                                    "3": "20150218-0013742",
+                                    "4": "2"
+                                }
+                            ]
+                        },
+                        "text/html": [
+                            "<table>",
+                            "<tr><th>ParcelID</th><th>propertyAddress</th><th>SaleDate</th><th>legalReference</th><th>cnt</th></tr>",
+                            "<tr><td>081 07 0 265.00</td><td>1806  15TH AVE N, NASHVILLE</td><td>2015-02-17</td><td>20150223-0015122</td><td>2</td></tr>",
+                            "<tr><td>081 11 0 168.00</td><td>1710  DR D B TODD JR BLVD, NASHVILLE</td><td>2015-02-13</td><td>20150218-0013602</td><td>2</td></tr>",
+                            "<tr><td>081 11 0 495.00</td><td>1718  ARTHUR AVE, NASHVILLE</td><td>2015-02-09</td><td>20150210-0012450</td><td>2</td></tr>",
+                            "<tr><td>081 15 0 472.00</td><td>1818 B  SCOVEL ST, NASHVILLE</td><td>2015-02-20</td><td>20150223-0015257</td><td>2</td></tr>",
+                            "<tr><td>081 15 0 263.00</td><td>1520  14TH AVE N, NASHVILLE</td><td>2015-02-12</td><td>20150218-0013742</td><td>2</td></tr>",
+                            "</table>"
+                        ]
+                    }
+                }
+            ],
+            "execution_count": 18
+        },
+        {
+            "cell_type": "markdown",
+            "source": [
+                "We are deleting rows using Common Table Expression."
+            ],
+            "metadata": {
+                "azdata_cell_guid": "fe6f97f6-8a54-4ab5-8208-8c8ffb774dd8"
+            },
+            "attachments": {}
+        },
+        {
+            "cell_type": "code",
+            "source": [
+                "WITH DuplicateRowsCTE as (\n",
+                "    select uniqueID,\n",
+                "            ROW_NUMBER() over (partition by ParcelID, propertyAddress, SaleDate, legalReference order by uniqueID) rownum \n",
+                "            from NashvilleHousing\n",
+                ")\n",
+                "\n",
+                "-- Delete rows from table '[NashvilleHousing]' in schema '[dbo]'\n",
+                "DELETE FROM [dbo].[NashvilleHousing]\n",
+                "WHERE UniqueID in (select UniqueID from DuplicateRowsCTE\n",
+                "where rownum >1)\n",
+                "GO "
+            ],
+            "metadata": {
+                "azdata_cell_guid": "821f526a-3146-43ff-b95b-74cba0b70de0",
+                "language": "sql"
+            },
+            "outputs": [
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "(104 rows affected)"
+                    },
+                    "metadata": {}
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/html": "Total execution time: 00:00:00.149"
+                    },
+                    "metadata": {}
+                }
+            ],
+            "execution_count": 28
+        }
+    ]
+}
