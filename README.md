@@ -8,5 +8,5 @@ Portfolio projects include the following.
    - Skills used: Bar Chart, Maps, Line Chart, Forecasting
 4. Tableau - Enhanced Covid Dashboard on Vaccinations
    - Skills used: Overlapped Bar Chart, Filter, Calculated Fields, Parameters, Map, Scatterplots
-5. Python - An analysis on Movies
+5. Python - Correlation analysis on movies from 1986 - 2016
    - Skills used: Pandas, seaborn, matplotlib
